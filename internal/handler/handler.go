@@ -19,5 +19,7 @@ func (h *Handler) Init(app *fiber.App) {
 	card := api.Group("card")
 	card.Post("/", h.CreateCard)
 	card.Get("/:id", h.GetCardById)
+	card.Get("/", h.GetAllCards)
 	card.Put("/", h.UpdateCard)
+	card.Delete("/:id", h.DeleteCard)
 }

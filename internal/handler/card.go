@@ -35,6 +35,16 @@ func (h *Handler) GetCardById(c *fiber.Ctx) error {
 	})
 }
 
+func (h *Handler) GetAllCards(c *fiber.Ctx) error {
+	data, err := h.services.Card.GetAllCards()
+	if err != nil {
+		return c.JSON(err.Error())
+	}
+	return c.JSON(fiber.Map{
+		"data": data,
+	})
+}
+
 func (h *Handler) UpdateCard(c *fiber.Ctx) error {
 	formData := new(domain.Card)
 	err := c.BodyParser(formData)
@@ -47,5 +57,19 @@ func (h *Handler) UpdateCard(c *fiber.Ctx) error {
 	}
 	return c.JSON(fiber.Map{
 		"Status": true,
+	})
+}
+
+func (h *Handler) DeleteCard(c *fiber.Ctx) error {
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.JSON(err)
+	}
+	err = h.services.Card.DeleteCard(id)
+	if err != nil {
+		return c.JSON(err.Error())
+	}
+	return c.JSON(fiber.Map{
+		"status": true,
 	})
 }

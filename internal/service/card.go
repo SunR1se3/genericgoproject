@@ -27,18 +27,17 @@ func (s *CardService) CreateCard(data domain.Card) (*uuid.UUID, error) {
 }
 
 func (s *CardService) GetById(id uuid.UUID) (*domain.Card, error) {
-	data, err := s.baseRepo.GetOne(id)
-	if err != nil {
-		return nil, err
-	}
+	return s.baseRepo.GetOne(id)
+}
 
-	return data, err
+func (s *CardService) GetAllCards() ([]domain.Card, error) {
+	return s.baseRepo.GetAll()
 }
 
 func (s *CardService) UpdateCard(data domain.Card) error {
 	return s.baseRepo.Update(data)
 }
 
-func (s *CardService) GetCardByName(name string) (*domain.Card, error) {
-	return nil, nil
+func (s *CardService) DeleteCard(id uuid.UUID) error {
+	return s.baseRepo.Delete(id)
 }
