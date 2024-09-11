@@ -1,40 +1,20 @@
 package mapper
 
-import (
-	"reflect"
-)
+type MapperFunc[T1, T2 any] func(src *T1, dest *T2)
 
-var Map *Mapper
-
-type Mapper struct {
-	data map[string]any
+// Mapper — структура для хранения мапперов
+type Mapper[T1, T2 any] struct {
+	mappings []MapperFunc[T1, T2]
 }
 
-func NewMapper() *Mapper {
-	return &Mapper{
-		data: make(map[string]any),
+// AddMapping — добавляет функцию маппинга полей
+func (m *Mapper[T1, T2]) AddMapping(mapping MapperFunc[T1, T2]) {
+	m.mappings = append(m.mappings, mapping)
+}
+
+// Map — выполняет маппинг для переданных структур
+func (m *Mapper[T1, T2]) Map(src *T1, dest *T2) {
+	for _, mapping := range m.mappings {
+		mapping(src, dest)
 	}
-}
-
-func (m *Mapper) InjectModels(models ...reflect.Type) {
-	for _, model := range models {
-		m.data[model.Name()] = nil
-		m.SetTableName(model, model.Name())
-	}
-
-}
-
-func (m *Mapper) SetTableName(model reflect.Type, tableName string) {
-	m.data[model.Name()] = map[string]any{
-		"tableName": tableName,
-	}
-}
-
-func (m *Mapper) GetTableName(model reflect.Type) string {
-	w := model.Name()
-	k := m.data[w]
-	q := k.(map[string]any)
-	t := q["tableName"].(string)
-	return t
-	//return m.data[model.Name()].(map[string]any)["tableName"].(string)
 }

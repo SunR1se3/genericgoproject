@@ -20,9 +20,9 @@ func NewService(r *repository.Repository, db *sqlx.DB) *Service {
 }
 
 type Card interface {
-	CreateCard(data domain.Card) (*uuid.UUID, error)
+	CreateCard(formData *domain.CardCreateForm) (*uuid.UUID, error)
 	GetById(id uuid.UUID) (*domain.Card, error)
 	GetAllCards() ([]domain.Card, error)
-	UpdateCard(data domain.Card) error
+	UpdateCard(formData *domain.CardUpdateForm, id uuid.UUID) error
 	DeleteCard(id uuid.UUID) error
 }

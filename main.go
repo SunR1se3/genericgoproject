@@ -3,7 +3,7 @@ package main
 import (
 	"GenericProject/internal/domain"
 	"GenericProject/internal/handler"
-	"GenericProject/internal/pkg/mapper"
+	"GenericProject/internal/pkg/generic_injector"
 	"GenericProject/internal/repository"
 	"GenericProject/internal/service"
 	"flag"
@@ -53,10 +53,11 @@ func closeConnection(connect *sqlx.DB) error {
 func main() {
 	flag.Parse()
 	connect()
-	mapper.Map = mapper.NewMapper()
-	mapper.Map.InjectModels(
+	generic_injector.GI = generic_injector.NewInjector()
+	generic_injector.GI.InjectModels(
 		reflect.TypeOf(domain.Card{}),
 	)
+	//app_mapper.NewMapper()
 
 	app := fiber.New(fiber.Config{Prefork: false, BodyLimit: 16 * 1024 * 1024})
 	//middlewares

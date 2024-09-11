@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"GenericProject/internal/domain"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,5 +15,4 @@ func NewRepository(db *sqlx.DB) *Repository {
 }
 
 type Card interface {
-	GetCardByName(name string) (*domain.Card, error)
 }
